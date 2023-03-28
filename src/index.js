@@ -36,27 +36,25 @@ async function onSearch(e) {
     return;
   }
   clearCard();
-  currentPage = 1;
- await fetchData(searchQuery).then(data => renderMarkup(data));
+  // currentPage = 1;
+  await fetchData(searchQuery).then(data => renderMarkup(data));
 }
 
 function renderMarkup({ hits, totalHits }) {
   totalImages += hits.length;
-  
-  if (hits.length === 0) {
+
+  if (totalImages === totalHits) {
+    Notiflix.Notify.info(
+      "We're sorry, but you've reached the end of search results."
+    );
+    return;
+  } else if (hits.length === 0) {
     return Notiflix.Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
   }
-
-  const message = `Hooray! We found ${totalHits} images.`;
-  Notiflix.Notify.success(message);
-
-  if (totalImages >= totalHits) {
-    Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
-    return;
-  }
-  renderImagesCard(hits);  
+  Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
+  renderImagesCard(hits);
 }
 
 function renderImagesCard(imagesData) {
