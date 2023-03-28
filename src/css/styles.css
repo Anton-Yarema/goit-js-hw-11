@@ -1,0 +1,47 @@
+body {
+  position: relative;
+}
+
+.gallery {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-top: 50px;
+}
+
+.info {
+  width: 420px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.search-form {
+  position: fixed;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%);
+
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 40px;
+
+  background-color: blue;
+}
+
+.search-form-input {
+  width: 300px;
+}
+
+.info-item {
+  color: black;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  text-decoration: none;
+}
