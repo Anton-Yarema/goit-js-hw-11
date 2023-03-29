@@ -3,7 +3,6 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import './css/styles.css';
 import fetchData from './js/fetchCard';
-import { PER_PAGE } from './js/fetchCard';
 
 const formRef = document.querySelector('.search-form');
 const galleryRef = document.querySelector('.gallery');
@@ -45,6 +44,7 @@ async function onSearch(e) {
     const data = await fetchData(searchQuery);
     renderMarkup(data);
     notifTotalHits(data);
+    endList(data);
   } catch (error) {
     console.error(error);
   }
@@ -128,13 +128,4 @@ function notifTotalHits(data) {
   }
 }
 
-let quantityHits = 0;
 
-function checkEndList(data) {
-  const { totalHits, hits } = data;
-    if (totalImages === totalHits) {
-    return Notiflix.Notify.info(
-      "We're sorry, but you've reached the end of search results."
-    );
-  }
-}
