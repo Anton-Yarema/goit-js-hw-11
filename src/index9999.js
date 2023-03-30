@@ -119,3 +119,120 @@ class ImageSearch {
 }
 
 new ImageSearch();
+
+
+
+// import axios from 'axios';
+// import Notiflix from 'notiflix';
+
+// const BASE_URL = 'https://pixabay.com/api/';
+// const API_KEY = '34731072-348d9a1558c6b29bcd98e02ff';
+// const PER_PAGE = 40;
+
+// let currentPage = 1;
+// let searchQuery = '';
+// let isLoading = false;
+
+// const formRef = document.querySelector('.search-form');
+// const galleryRef = document.querySelector('.gallery');
+// const btnRef = document.querySelector('.load-more');
+
+// const lightBox = new SimpleLightbox('.gallery a', {
+//   captionsData: 'alt',
+//   captionDelay: 250,
+// });
+
+// formRef.addEventListener('submit', onSearch);
+// galleryRef.addEventListener('click', onGalleryClick);
+// btnRef.addEventListener('click', onLoadMoreClick);
+
+// async function fetchData(searchQuery, page) {
+//   try {
+//     const searchParams = new URLSearchParams({
+//       key: API_KEY,
+//       q: searchQuery,
+//       image_type: 'photo',
+//       orientation: 'horizontal',
+//       safesearch: 'true',
+//       page,
+//       per_page: PER_PAGE,
+//     });
+//     const url = `${BASE_URL}?${searchParams}`;
+
+//     const response = await axios.get(url);
+//     const { hits, totalHits } = response.data;
+    
+//     return { hits, totalHits };
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
+
+// function renderMarkup({ hits }) {
+//   const markup = hits
+//     .map(
+//       ({
+//         webformatURL,
+//         largeImageURL,
+//         tags,
+//         likes,
+//         views,
+//         comments,
+//         downloads,
+//       }) => {
+//         return `
+//           <a class="gallery__link" href="${largeImageURL}">
+//             <div class="photo-card">
+//               <img class="gallery__image" src="${webformatURL}" alt="${tags}" loading="lazy" width="420px"/>
+//               <div class="info">
+//                 <p class="info-item">
+//                   <b>likes</b> ${likes}
+//                 </p>
+//                 <p class="info-item">
+//                   <b>views</b> ${views}
+//                 </p>
+//                 <p class="info-item">
+//                   <b>comments</b> ${comments}
+//                 </p>
+//                 <p class="info-item">
+//                   <b>downloads</b> ${downloads}
+//                 </p>
+//               </div>
+//             </div>
+//           </a>`;
+//       }
+//     )
+//     .join('');
+//   galleryRef.insertAdjacentHTML('beforeend', markup);
+// }
+
+// async function onSearch(e) {
+//   e.preventDefault();
+  
+//   searchQuery = e.currentTarget.elements.searchQuery.value.trim();
+//   if (!searchQuery) {
+//     Notiflix.Notify.failure(
+//       'Sorry, there are no images matching your search query. Please try again.'
+//     );
+//     return;
+//   }
+  
+//   currentPage = 1;
+//   isLoading = true;
+//   btnRef.classList.add('is-hidden');
+  
+//   clearGallery();
+//   const { hits, totalHits } = await fetchData(searchQuery, currentPage);
+//   renderMarkup({ hits });
+//   updateLoadMoreButton(totalHits);
+  
+//   isLoading = false;
+//   if (hits.length === 0) {
+//     Notiflix.Notify.failure(
+//       'Sorry, there are no images matching your search query. Please try again.'
+//     );
+//   }
+// }
+
+// async function onLoadMoreClick() {
+//   if (isLoading)

@@ -8,8 +8,10 @@ const formRef = document.querySelector('.search-form');
 const galleryRef = document.querySelector('.gallery');
 
 let searchQuery = '';
-let page = 1;
+let currentPage = '';
 let isLoading = false;
+let endOfCollection = false;
+const PER_PAGE = 40;
 
 const lightBox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
@@ -28,12 +30,12 @@ function onGalleryClick(e) {
     return;
   }
 }
-
 async function onSearch(e) {
   try {
     e.preventDefault();
     searchQuery = e.currentTarget.elements.searchQuery.value.trim();
-    page = 1;
+    currentPage = 1;
+    endOfCollection = false;
     if (!searchQuery) {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
@@ -41,10 +43,9 @@ async function onSearch(e) {
       return;
     }
     clearCard();
-    const data = await fetchData(searchQuery);
+    const data = await fetchData(searchQuery, currentPage);
     renderMarkup(data);
     notifTotalHits(data);
-    endList(data);
   } catch (error) {
     console.error(error);
   }
@@ -99,24 +100,36 @@ window.addEventListener('scroll', async () => {
 
     if (
       documentRect.bottom < document.documentElement.clientHeight + 200 &&
-      !isLoading
+      !isLoading &&
+      !endOfCollection
     ) {
       isLoading = true;
-      page++;
-      const data = await fetchData(searchQuery, page);
+      currentPage++;
+      const data = await fetchData(searchQuery, currentPage);
       renderMarkup(data);
       lightBox.refresh();
+      endList(data);
       isLoading = false;
+    } else if (endOfCollection) {
+      window.removeEventListener('scroll', arguments.callee); // удаляем обработчик, если достигнут конец коллекции
     }
   } catch (error) {
     console.error(error);
   }
 });
+function endList(data) {
+  const { totalHits, hits } = data;
+  if (totalHits - (currentPage * PER_PAGE) < 40) {
+    endOfCollection = true;
+    return Notiflix.Notify.info(
+      "We're sorry, but you've reached the end of search results."
+    );
+  }
+}
 
 function clearCard() {
   galleryRef.innerHTML = '';
 }
-
 function notifTotalHits(data) {
   const { totalHits, hits } = data;
   if (hits.length > 0) {
@@ -127,5 +140,3 @@ function notifTotalHits(data) {
     );
   }
 }
-
-
