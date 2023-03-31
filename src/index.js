@@ -36,10 +36,7 @@ async function onSearch(e) {
     searchQuery = e.currentTarget.elements.searchQuery.value.trim();
     currentPage = 1;
     endOfCollection = false;
-    if (!searchQuery) {
-      Notiflix.Notify.failure(
-        'Sorry, there are no images matching your search query. Please try again.'
-      );
+    if (!searchQuery) {     
       return;
     }
     clearCard();
@@ -51,7 +48,7 @@ async function onSearch(e) {
   }
 }
 
-function renderMarkup({ hits }) {
+function renderMarkup({ hits }) {  
   renderImagesCard(hits);
   lightBox.refresh();
 }
@@ -119,9 +116,12 @@ window.addEventListener('scroll', async () => {
 });
 function endList(data) {
   const { totalHits, hits } = data;
-  if (totalHits - (currentPage * PER_PAGE) < 40) {
+  if (hits.length === 0) { 
+    return;
+  }
+  else if (totalHits - (currentPage * PER_PAGE) < 40) {
     endOfCollection = true;
-    return Notiflix.Notify.info(
+    Notiflix.Notify.info(
       "We're sorry, but you've reached the end of search results."
     );
   }
